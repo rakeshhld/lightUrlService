@@ -27,12 +27,12 @@ public class UrlDetails {
 	@Id
 	@Column()
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private String txId;
+	private int txId;
 	
-	public String getTxId() {
+	public int getTxId() {
 		return txId;
 	}
-	public void setTxId(String txId) {
+	public void setTxId(int txId) {
 		this.txId = txId;
 	}
 	public String getShorturl() {
@@ -50,12 +50,7 @@ public class UrlDetails {
 	
 	
 	
-	public UrlDetails(String shorturl, String longurl, String txId) {
-		super();
-		this.shorturl = shorturl;
-		this.longurl = longurl;
-		this.txId = txId;
-	}
+
 	/**
 	 * @param longurl long url which is the actual url to be encoded
 	 */
@@ -65,11 +60,12 @@ public class UrlDetails {
 	
 	
 	public UrlDetails() {}
-	
 	@Override
 	public String toString() {
-		return "UrlDetails [shorturl=" + shorturl + ", longurl=" + longurl + "]";
+		return "UrlDetails [shorturl=" + shorturl + ", longurl=" + longurl + ", txId=" + txId + "]";
 	}
+	
+	
 	
 	
 	

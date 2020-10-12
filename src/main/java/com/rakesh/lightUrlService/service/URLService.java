@@ -47,9 +47,9 @@ public class URLService {
 	
 	public List<UrlDetails> getAllURLS()   
 	{  
-	List<UrlDetails> books = new ArrayList<UrlDetails>();  
-	urlRepository.findAll().forEach(books1 -> books.add(books1));  
-	return books;  
+	List<UrlDetails> urlList = new ArrayList<UrlDetails>();  
+	urlRepository.findAll().forEach(i -> urlList.add(i));  
+	return urlList;  
 	}  
 	
 
@@ -60,7 +60,6 @@ public class URLService {
 	 */
 	public String saveOrUpdate(UrlDetails url)   
 	{  
-		 // byte[] arrayURL = url.getLongurl().getBytes();
 		if(currentCounter == 0 ) {
 			currentCounter = startCounter;
 		}
@@ -85,16 +84,8 @@ public class URLService {
 	public void delete(int id)   
 	{  
 		urlRepository.deleteById(id);  
-	}  
+	}
 	
-	/**
-	 * @param url
-	 * @param txId
-	 */
-	public void update(UrlDetails url, int txId)   
-	{  
-		urlRepository.save(url);  
-	}  
 	
 	/**
 	 * @param data

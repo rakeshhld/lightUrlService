@@ -6,10 +6,11 @@ import javax.servlet.http.HttpServletResponse;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,7 +29,7 @@ public class URLController {
 	URLService urlsService;
 	
 	@GetMapping("/url")  
-	private List<UrlDetails> getAllBooks()   
+	public List<UrlDetails> getAllURLS()   
 	{  
 	return urlsService.getAllURLS();  
 	}  
@@ -38,7 +39,7 @@ public class URLController {
 	 * @return string response or (text/plain) response which is shortcut url or encoded url
 	 */
 	@PostMapping("/url")  
-	private String saveURL(  @RequestBody UrlDetails urldDetails,HttpServletResponse httpServletResponse)   
+	public String saveURL(  @RequestBody UrlDetails urldDetails,HttpServletResponse httpServletResponse)   
 	{  
 		if(null == urldDetails.getLongurl()) {
 			throw new URLEmptyException("long url is not present","Please add loginurl as parameter");
@@ -47,9 +48,7 @@ public class URLController {
 			throw new URLEmptyException("long url is Empty","Please add any valid url string.");
 		}
 		httpServletResponse.setStatus(201);
-		
-    	return  urlsService.saveOrUpdate(urldDetails);  
-	  //urldDetails.getShorturl();  
+    	return  urlsService.saveOrUpdate(urldDetails); 
 	}  
 	
 	/**
@@ -57,12 +56,18 @@ public class URLController {
 	 * @param httpServletResponse this method redirects to the original url which was encoded
 	 */
 	@GetMapping("/url/{shorturl}")  
-	private void getLongURL(@PathVariable("shorturl") String shorturl,HttpServletResponse httpServletResponse)   
+	public void getLongURL(@PathVariable("shorturl") String shorturl,HttpServletResponse httpServletResponse)   
 	{  
-		
 		  httpServletResponse.setHeader("Location", urlsService.getlongURl(shorturl));
 		  httpServletResponse.setStatus(302);
-		
+	}
+	
+	
+	 
+	@DeleteMapping("/url/{urlId}")  
+	private void deleteUrl(@PathVariable("urlId") int urlId)   
+	{  
+	urlsService.delete(urlId);  
 	}  
 
 }

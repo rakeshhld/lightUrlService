@@ -18,7 +18,6 @@ import com.rakesh.lightUrlService.model.UrlDetails;
  *
  */
 @Repository
-//@Transactional
 public class CustomURLRepoImpl implements CustomURLRepo {
 	
 	@PersistenceContext
