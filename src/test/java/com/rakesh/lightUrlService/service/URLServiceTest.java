@@ -37,6 +37,7 @@ public class URLServiceTest {
 			System.out.println("response"+response);
 			String output = service.getlongURl(response);
 			System.out.println("output"+output);
+			service.delete(1);
 			assertEquals(url, output);
 			System.out.println("Stop!!!!!!!!!!");
 		}
@@ -51,13 +52,18 @@ public class URLServiceTest {
 		public void getAllURLs() {
 			List<UrlDetails> udList =service.getAllURLS();
 			System.out.println("list before delete"+udList);
-			assertFalse(udList.isEmpty());
+			assertTrue(udList.isEmpty());
 		}
 		
-		@Test(expected=InvalidDataAccessApiUsageException.class)
+		@Test
 		public void deletelURLs() {
 			System.out.println("new start!!!!!!!!!!!!!!!!!");
-			service.delete(1);
+			service.getAllURLS();
+			String url = "https://www.youtube.com/";
+			UrlDetails ud = new UrlDetails(url);
+			String response = service.saveOrUpdate(ud);
+			service.getAllURLS();
+			service.delete(2);
 			List<UrlDetails> udList =service.getAllURLS();
 			System.out.println("list after delete"+udList);
 			assertTrue(udList.isEmpty());

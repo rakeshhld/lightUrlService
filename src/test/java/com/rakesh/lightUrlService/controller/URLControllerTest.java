@@ -7,6 +7,8 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
+import javax.annotation.Resource;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -34,6 +36,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rakesh.exception.URLEmptyException;
 import com.rakesh.lightUrlService.LightUrlServiceApplication;
 import com.rakesh.lightUrlService.model.UrlDetails;
+import com.rakesh.lightUrlService.service.URLService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = LightUrlServiceApplication.class)
@@ -43,6 +46,9 @@ public class URLControllerTest {
 	protected MockMvc mvc;
 	@Autowired
 	WebApplicationContext webApplicationContext;
+	
+	@Resource
+	private URLService  service;
 
 
 	@Before
@@ -109,13 +115,16 @@ public class URLControllerTest {
 	
 	@Test
 	public void deleteURL() throws Exception{
+		service.getAllURLS();
+		//service.delete(1);
 		UrlDetails newURLData = new UrlDetails("https://youtube.com");
 		System.out.println(newURLData);
+		service.getAllURLS();
 		String url = "/url";
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(url).contentType(MediaType.APPLICATION_JSON_VALUE)
 				.content(this.mapToJson(newURLData))).andReturn();
 		System.out.println("ss" + mvcResult.getResponse().getContentAsString());
-		mvc.perform(MockMvcRequestBuilders.delete(url+"/1").contentType(MediaType.APPLICATION_JSON_VALUE)
+		mvc.perform(MockMvcRequestBuilders.delete(url+"/2").contentType(MediaType.APPLICATION_JSON_VALUE)
 				.content(this.mapToJson(newURLData))).andReturn();
 		MvcResult mvcResult3 =mvc.perform(MockMvcRequestBuilders.get(url).accept(MediaType.APPLICATION_JSON_VALUE))
 				.andReturn();
@@ -139,6 +148,7 @@ public class URLControllerTest {
 		MvcResult  mvcResult1 = mvc.perform(MockMvcRequestBuilders.get(url+"/"+responsedata).accept(MediaType.APPLICATION_JSON_VALUE))
 				.andReturn();
 		int newstatus = mvcResult1.getResponse().getStatus();
+		service.delete(1);
 		assertEquals(302, newstatus);
 	}
 	
